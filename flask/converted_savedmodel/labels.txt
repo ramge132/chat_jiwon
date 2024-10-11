@@ -1,0 +1,8 @@
+0 infant_M
+1 infant_F
+2 young-adult_M
+3 young-adult_F
+4 middle-aged_M
+5 middle-aged_F
+6 elderly_M
+7 elderly_F
