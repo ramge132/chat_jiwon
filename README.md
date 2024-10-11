@@ -1,8 +1,16 @@
 ## 실행 방법
 
-### 1. 전체 파일을 다운로드하고  
+### 1. git clone
+```bash
+git clone https://github.com/ramge132/chat_jiwon.git
+```
+
+<br /> 
+
+### 2. 가상환경 구축
+
 가상환경 구축을 위해
-루트 디렉토리에서 다음을 실행
+프로젝트 루트 디렉토리에서 다음을 실행
 ```bash
 python -m venv venv
 ```
@@ -12,7 +20,7 @@ source venv/Scripts/activate
 
 <br />  
 
-### 2. 의존 패키지 설치
+### 3. 의존 패키지 설치
 ```bash
 pip install -r requirements.txt 
 ```
@@ -25,11 +33,11 @@ npm install
 
 <br />
 
-### 3. 실행  
-(두개의 터미널 창이 필요)
+### 4. 실행  
+> 두개의 터미널 창이 필요
 
 
-터미널1 위치 : `$jiwon_bot/front/chatingUI`
+`$jiwon_bot/front/chatingUI` 에서
 ``` bash
 npm run dev
 ```
@@ -37,7 +45,7 @@ npm run dev
   
 <br>
 
-터미널2 위치 : `$jiwon_bot/flask`
+`$jiwon_bot/flask` 에서
 ``` bash
 cd ../../flask
 ```
