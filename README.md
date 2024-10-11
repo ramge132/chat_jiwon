@@ -51,7 +51,7 @@ npm run dev
 cd ../../flask
 ```
 ```bash
-python main.py
+python app.py
 ```
 `TF_ENABLE_ONEDNN_OPTS=0`와 같은 문구는  
 CPU를 사용하므로 속도가 느릴 수 있다는 경고문
