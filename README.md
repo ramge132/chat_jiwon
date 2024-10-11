@@ -63,3 +63,5 @@ CPU를 사용하므로 속도가 느릴 수 있다는 경고문
 ```
 PERPLEXITY_API_KEY = "여기에 API KEY 입력"
 ```
+
+Perplexity API 링크: https://www.perplexity.ai/settings/api
