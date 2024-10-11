@@ -33,6 +33,7 @@ npm install
 
 <br />
 
+
 ### 4. 실행  
 > 두개의 터미널 창이 필요
 
@@ -55,5 +56,10 @@ python main.py
 `TF_ENABLE_ONEDNN_OPTS=0`와 같은 문구는  
 CPU를 사용하므로 속도가 느릴 수 있다는 경고문
 
+<br />
 
-
+### 5. API KEY 할당
+.env를 루트 디렉토리에 생성하고 아래 내용 저장
+```
+PERPLEXITY_API_KEY = "여기에 API KEY 입력"
+```
