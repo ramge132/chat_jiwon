@@ -78,6 +78,10 @@
           <div class="mt-3">
             <label for="imageUpload" class="form-label">사진 업로드</label>
             <input type="file" id="imageUpload" @change="handleImageUpload" accept="image/*" class="form-control" />
+            <!-- 이미지 분석 결과 표시 -->
+            <div v-if="gender && ageGroup" class="image-analysis-result mt-2">
+              <p>이미지 분석 결과: 성별 - {{ gender }}, 연령대 - {{ ageGroup }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -121,6 +125,8 @@ export default {
       ],
       currentLoadingMessageIndex: 0,
       loadingTimeouts: [],
+      gender: '',
+      ageGroup: '',
     };
   },
   methods: {
@@ -170,13 +176,22 @@ export default {
       // 로딩 메시지 시작
       this.startLoadingMessages();
 
+      // 성별과 연령대를 userInfo에 포함
+      if (this.gender) {
+        this.userInfo['gender'] = this.gender;
+      }
+      if (this.ageGroup) {
+        this.userInfo['age'] = this.ageGroup;
+      }
+
       try {
         const formData = new FormData();
         for (const key in this.userInfo) {
           formData.append(key, this.userInfo[key]);
         }
-        if (this.imageFile) {
-          formData.append('image', this.imageFile); // 이미지는 전송하되 표시하지 않음
+        // 성별 또는 연령대가 없으면 이미지를 전송
+        if ((!this.gender || !this.ageGroup) && this.imageFile) {
+          formData.append('image', this.imageFile);
         }
 
         const response = await axios.post('http://127.0.0.1:5000/run-script', formData);
@@ -239,10 +254,41 @@ export default {
       // 로딩 메시지 제거
       this.messages = this.messages.filter(msg => !msg.isLoadingMessage);
     },
-    handleImageUpload(event) {
+    async handleImageUpload(event) {
       const file = event.target.files[0];
       if (file) {
         this.imageFile = file;
+
+        // 이미지 전송을 위한 FormData 객체 생성
+        const formData = new FormData();
+        formData.append('image', this.imageFile);
+
+        try {
+          // 서버로 이미지 전송
+          const response = await axios.post('http://127.0.0.1:5000/classify-image', formData);
+
+          // 성별과 연령대 변수 업데이트
+          this.gender = response.data.gender;
+          this.ageGroup = response.data.age_group;
+
+          // 메시지에 결과를 표시하려면 아래 코드를 사용하세요 (현재는 파일 선택 아래에 표시됨)
+          /*
+          this.messages.push({
+            text: `이미지 분석 결과: 성별 - ${this.gender}, 연령대 - ${this.ageGroup}`,
+            type: 'bot',
+          });
+          */
+        } catch (error) {
+          console.error('Error uploading image:', error);
+          this.messages.push({
+            text: `이미지 분석 오류: ${error.response ? error.response.data.error : error.message}`,
+            type: 'bot',
+          });
+        }
+
+        this.$nextTick(() => {
+          this.$refs.messagesContainer.scrollTop = this.$refs.messagesContainer.scrollHeight;
+        });
       }
     },
     getQuestionKey(index) {
@@ -295,12 +341,13 @@ export default {
 };
 </script>
 
+
 <style>
 html, body {
   height: 100%;
   margin: 0;
   font-family: 'Noto Sans KR', sans-serif !important;
-  font-size: 18px; /* 기본 폰트 크기 */
+  font-size: 15px; /* 기본 폰트 크기 */
   line-height: 1.6; /* 가독성을 위해 줄 간격 조정 */
 }
 
