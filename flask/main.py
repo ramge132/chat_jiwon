@@ -1,3 +1,4 @@
+# main.py
 import requests
 import tensorflow as tf
 import numpy as np
@@ -24,7 +25,6 @@ model = tf.saved_model.load('converted_savedmodel/model.savedmodel')
 # 이미지 파일 경로
 image_path = 'test/young-ad.jpg'
 
-
 # 이미지 전처리 함수 (Teachable Machine 방식 적용)
 def preprocess_image(image_path):
     # 이미지를 OpenCV로 읽기
@@ -39,7 +39,6 @@ def preprocess_image(image_path):
     # 이미지를 정규화 (Teachable Machine 방식: (이미지 / 127.5) - 1)
     image = (image / 127.5) - 1
     return image
-
 
 # 분류 함수
 def classify_image(model, image_path):
@@ -76,7 +75,6 @@ def classify_image(model, image_path):
     print('자동 분류된 정보: ', gender, age_group)
     return gender, age_group
 
-
 # Perplexity API 호출 함수
 def get_completion_from_perplexity(messages):
     headers = {
@@ -96,7 +94,6 @@ def get_completion_from_perplexity(messages):
         return response.json()
     else:
         raise Exception(f"Request failed: {response.status_code}, {response.text}")
-
 
 # 검색 요청 및 Perplexity API와 연동 함수
 def search_policy(user_info):
@@ -118,7 +115,6 @@ def search_policy(user_info):
 
     return response["choices"][0]["message"]["content"]
 
-
 # 메인 실행 함수
 def main(userInfo):
     # 얼굴 이미지 분류
@@ -128,7 +124,6 @@ def main(userInfo):
 
     # 정책 검색 요청
     return search_policy(userInfo)
-
 
 # 실행
 if __name__ == "__main__":
